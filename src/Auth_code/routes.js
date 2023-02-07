@@ -1,12 +1,11 @@
 const { Router }= require('express')
 const router = Router();
 const {
-  login,
-  compareAPI
+  authCode,
+  // compareAPI
   } = require("./controller");
 
-router.post("/", login); 
-router.post("/compareAPI", compareAPI);
-
+router.post("/authcode",authCode); 
+// router.post("/compareAPI",compareAPI);
 
 module.exports =router;

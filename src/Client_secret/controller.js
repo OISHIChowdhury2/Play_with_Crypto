@@ -59,7 +59,7 @@ const compareAPI = (req,res) =>{
         // console.log(data.rows[0]);
         const all = (data.rows);
         // console.log("ji",all);
-          const found = all.filter(mail => mail.all === secret)
+          const found = all.filter(mail => mail.secret === secret)
     //  console.log(found);
          bcrypt.compare(req.body.secret,"724d80fddd5eff29ea5e9ef8c8ff4e2819b219e230f1b82ca180337bff8d3afd6ca5ea7da052b3e4", function(err, result) { 
             console.log(result); 
