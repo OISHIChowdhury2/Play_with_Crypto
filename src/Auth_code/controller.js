@@ -6,7 +6,7 @@ const queries = require("./querry");
 const { createHash } = require("crypto")
 const {  publicEncrypt } = require('crypto');
 const { generateKeyPairSync } = require('crypto');
-
+const { createSign, createVerify } = require('crypto');
 const { privateKey, publicKey } = generateKeyPairSync('rsa', {
   modulusLength: 2048, 
   publicKeyEncoding: {
@@ -41,16 +41,11 @@ const authCode= (req, res)=>{
         publicKey,
         Buffer.from(passhash)
       );
-    
     // console.log(encryptedData.toString('hex'))
-
     const main = encryptedData.toString('hex');
-
     // console.log(main);
-
     // let mainsecret = main.substring(10,90);
  console.log(main);
-
     pool.query(queries.loginSQ,[main],(error)=>{
         if(error) throw error;   
         res.status(201).json({
@@ -58,45 +53,33 @@ const authCode= (req, res)=>{
           });
         })
     
-};
-
-const { createSign, createVerify } = require('crypto');
-
-// const compareAPI = (req,res) =>{
-
-//     pool.query(queries.compare,(error, data)=>{
-//         const all = (data.rows[3]);
-//         console.log(all);
-    
-//         const signer = createSign('rsa-sha256');
-//         signer.update(all);
-//         const siguature = signer.sign(privateKey, 'hex');
-//         console.log(siguature);
-        
-//         const verifier = createVerify('rsa-sha256');
-        
-//         verifier.update(all);
-        
-//         const isVerified = verifier.verify(publicKey, siguature, 'hex');
-        
-//         console.log(isVerified);
 
 
-        
-//             res.status(200).json({
-//                 message: 'Client Id match',
-//             });
-//         // }else{
-//         //     res.status(200).json({
-//         //         message: 'Client Id not match',
-//         //             //  data: base64data2,
-//         //     });
+
+const data = 'this data must be signed';
+
+/// SIGN
+
+const signer = createSign('rsa-sha256');
+
+signer.update(main);
+
+const siguature = signer.sign(privateKey, 'hex');
+
+console.log(siguature);
+
+/// VERIFY
+
+const verifier = createVerify('rsa-sha256');
+
+verifier.update(main);
+
+const isVerified = verifier.verify(publicKey, siguature, 'hex');
+
+console.log(isVerified);
            
-//     })
-
-
-// }
+    }
 module.exports={
     authCode,
-//    compareAPI,
+
 }

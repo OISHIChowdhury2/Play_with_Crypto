@@ -38,7 +38,7 @@ console.log(
 )
 
 // This is the data we want to encrypt
-const data =" given_name: Oishi,famicompareAPIly_name: Chowdhury,,nickname : oishichowdhury2"
+const data ="given_name: Oishi,famicompareAPIly_name: Chowdhury,,nickname : oishichowdhury2"
 const encryptedData = crypto.publicEncrypt(
 	{
 		key: publicKey,
@@ -51,17 +51,13 @@ const encryptedData = crypto.publicEncrypt(
 console.log("encypted data: ",mainData)
 
 
-
-const verifiableData = "this need to be verified"
-
-
+//verify
 const signature = crypto.sign("sha256", Buffer.from(mainData), {
 	key: privateKey,
 	padding: crypto.constants.RSA_PKCS1_PSS_PADDING,
 })
 
 console.log(signature.toString("base64"))
-
 
 const isVerified = crypto.verify(
 	"sha256",
