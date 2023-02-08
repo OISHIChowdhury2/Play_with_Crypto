@@ -15,21 +15,12 @@ app.get("/", (req, res)=>{
     res.send("hi");
 });
 
-// privateKey and publicKey
+// privateKey and publicKey Access token 
 
 const { publicKey, privateKey } = crypto.generateKeyPairSync("rsa", {
 	modulusLength: 2048,
 })
-// console.log(
-// 	publicKey.export({
-// 		type: "pkcs1",
-// 		format: "pem",
-// 	}),
-// 	privateKey.export({
-// 		type: "pkcs1",
-// 		format: "pem",
-// 	})
-// )
+
 const data ="given_name: Oishi,famicompareAPIly_name: Chowdhury,,nickname : oishichowdhury2"
 const encryptedData = crypto.publicEncrypt(
 	{
@@ -56,7 +47,6 @@ const isVerified = crypto.verify(
 	signature2
 )
 console.log("signature verified: ", isVerified)
-
 
 
 
@@ -124,6 +114,12 @@ console.log ("the JWT is :",jsonWebToken);
 var buf = Buffer.from(jwtB64Payload, "base64");
 let text = buf.toString('utf-8');
  console.log ("the payload is: ",text);
+
+
+
+ var buf = Buffer.from(jwtB64Header, "base64");
+let header1 = buf.toString('utf-8');
+ console.log ("the header is: ",header1);
 
 
 app.use('/api/v1/client_id', cryptoRoutes);
