@@ -32,53 +32,39 @@ const secret= (req, res)=>{
     
       const saltRounds = 10;
       var password = base64URLEncode(crypto.randomBytes(32));
-      var key = base64URLEncode(crypto.randomBytes(16));
+
       bcrypt.genSalt(saltRounds, function(err, salt) {
         bcrypt.hash(password, salt, function(err, hash) {
                console.log(hash);
-               console.log("diBQRToexO8vGPwE5DwaZXsZiM5u59bC_2Y0nShWdnI805KU9cQrn4szaCuPgnOR");
-    pool.query(queries.loginSQ,[hash],(error)=>{
-        if(error) throw error;   
-        res.status(201).json({
-            message: ' Successfully',
-          });
-        })
+            //    console.log("diBQRToexO8vGPwE5DwaZXsZiM5u59bC_2Y0nShWdnI805KU9cQrn4szaCuPgnOR");
+    // pool.query(queries.loginSQ,[hash],(error)=>{
+    //     if(error) throw error;   
+    //     res.status(201).json({
+    //         message: ' Successfully',
+    //       });
+    //     })
          });
     
       });
 
-};
 
+bcrypt.compare(password,password , function(err, res) {
+    if(password != password){
+     
+      
+                 console.log('not match'); 
+                 
+    } else {
+      // Send JWT
+      console.log('match'); 
+    }
+  });
 
-
-
-   
-const compareAPI = (req,res) =>{
-        const {secret}= req.body;
-        pool.query(queries.compare,(error, data)=>{
-        // console.log(data.rows[0]);
-        const all = (data.rows);
-        // console.log("ji",all);
-          const found = all.filter(mail => mail.secret === secret)
-    //  console.log(found);
-         bcrypt.compare(req.body.secret,"724d80fddd5eff29ea5e9ef8c8ff4e2819b219e230f1b82ca180337bff8d3afd6ca5ea7da052b3e4", function(err, result) { 
-            console.log(result); 
-        if(req.body.secret === "724d80fddd5eff29ea5e9ef8c8ff4e2819b219e230f1b82ca180337bff8d3afd6ca5ea7da052b3e4"){
-            res.status(200).json({
-                message: 'Client Secret match',
-            });
-        }else{
-            res.status(200).json({
-                message: 'Client Secret not match',
-                    //  data: base64data2,
-            });
-        }      
-    })
-     })
+  
     
-}
 
+};
 module.exports={
     secret,
-   compareAPI,
+
 }

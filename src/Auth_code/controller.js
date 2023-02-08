@@ -35,16 +35,13 @@ const authCode= (req, res)=>{
       .update(password)
       .update(createHash("sha256").update(salt, "utf8").digest("hex"))
       .digest("hex")
-    // console.log(passhash);
-
     const encryptedData = publicEncrypt(
         publicKey,
         Buffer.from(passhash)
       );
-    // console.log(encryptedData.toString('hex'))
+
     const main = encryptedData.toString('hex');
-    // console.log(main);
-    // let mainsecret = main.substring(10,90);
+
  console.log(main);
     pool.query(queries.loginSQ,[main],(error)=>{
         if(error) throw error;   
@@ -55,30 +52,20 @@ const authCode= (req, res)=>{
     
 
 
-
-const data = 'this data must be signed';
-
 /// SIGN
-
 const signer = createSign('rsa-sha256');
-
 signer.update(main);
-
 const siguature = signer.sign(privateKey, 'hex');
-
 console.log(siguature);
-
 /// VERIFY
-
 const verifier = createVerify('rsa-sha256');
-
 verifier.update(main);
-
 const isVerified = verifier.verify(publicKey, siguature, 'hex');
-
-console.log(isVerified);
-           
+console.log(isVerified);      
     }
+
+
+
 module.exports={
     authCode,
 
