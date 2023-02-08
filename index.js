@@ -20,16 +20,16 @@ app.get("/", (req, res)=>{
 const { publicKey, privateKey } = crypto.generateKeyPairSync("rsa", {
 	modulusLength: 2048,
 })
-console.log(
-	publicKey.export({
-		type: "pkcs1",
-		format: "pem",
-	}),
-	privateKey.export({
-		type: "pkcs1",
-		format: "pem",
-	})
-)
+// console.log(
+// 	publicKey.export({
+// 		type: "pkcs1",
+// 		format: "pem",
+// 	}),
+// 	privateKey.export({
+// 		type: "pkcs1",
+// 		format: "pem",
+// 	})
+// )
 const data ="given_name: Oishi,famicompareAPIly_name: Chowdhury,,nickname : oishichowdhury2"
 const encryptedData = crypto.publicEncrypt(
 	{
@@ -56,7 +56,6 @@ const isVerified = crypto.verify(
 	signature2
 )
 console.log("signature verified: ", isVerified)
-
 
 
 
@@ -97,11 +96,8 @@ const payload = {
   sid: "7vjlHfOJKufNvT3OtRg0TgcmfoGdmceJ",
   nonce: "26863d58f88a53e4685b28645073d008"
 };
-
 const b64Payload = toBase64 (payload);
 const jwtB64Payload = replaceSpecialChars (b64Payload);
-// console.log ("the payload is: ",jwtB64Payload);
-
 const header = {
 	alg: 'RS256',
 	typ: 'JWT',
@@ -110,7 +106,6 @@ const header = {
   const b64Header = toBase64 (header);
   const jwtB64Header = replaceSpecialChars(b64Header);
   console.log ("the header is: ",jwtB64Header)
-
 const createSignature =(jwtB64Header,jwtB64Payload,secret)=>{
     let signature = crypto.createHmac ('sha256', secret);
     signature.update (jwtB64Header + '.' + jwtB64Payload);
@@ -125,6 +120,10 @@ const jsonWebToken = jwtB64Header + '.' + jwtB64Payload + '.' + signature;
 console.log ("the JWT is :",jsonWebToken);
 
 
+//decode the playload 
+var buf = Buffer.from(jwtB64Payload, "base64");
+let text = buf.toString('utf-8');
+ console.log ("the payload is: ",text);
 
 
 app.use('/api/v1/client_id', cryptoRoutes);
